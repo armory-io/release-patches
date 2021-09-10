@@ -1,0 +1,14 @@
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      version: 2.26.2
+    profiles:
+      clouddriver:
+        caching:
+          sharding-enabled: false
+      dinghy:
+        jsonValidationDisabled: true
