@@ -5,7 +5,7 @@ metadata:
 spec:
   spinnakerConfig:
     config:
-      version: 2.26.2
+      version: 2.27.0-rc2
     profiles:
       clouddriver:
         caching:
