@@ -6,9 +6,3 @@ spec:
   spinnakerConfig:
     config:
       version: 2.26.2
-    profiles:
-      clouddriver:
-        caching:
-          sharding-enabled: false
-      dinghy:
-        jsonValidationDisabled: true
