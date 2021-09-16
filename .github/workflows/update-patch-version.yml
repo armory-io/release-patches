@@ -1,0 +1,47 @@
+name: Update Patch Version
+
+on:
+  repository_dispatch:
+    types:
+      - UpdateVersionInPatchFile
+
+jobs:
+  update_patch_version:
+    name: Update Patch Version
+    runs-on: ubuntu-latest
+    env:
+      LTS_VERSION: ${{ github.event.client_payload.version }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.client_payload.branch }}
+
+      - name: Create yq Query
+        id: create_yq_query
+        run: |
+          echo "Updating spinnaker version to ${LTS_VERSION}"
+          SERVICE_QUERY="(.spec.spinnakerConfig.config.version)"
+          echo ::set-output name=query::"$SERVICE_QUERY = ${LTS_VERSION}"
+
+      - name: Update Stack File
+        uses: mikefarah/yq@v4.6.1
+        with:
+          cmd: yq eval -i '${{ steps.create_yq_query.outputs.query }}' resources/patch-spinnaker-version.yml
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3.8.2
+        with:
+          token: ${{ secrets.ASTROLABE_GITHUB_TOKEN }}
+          commit-message: "chore(cd): update Spinnaker version to ${{ env.LTS_VERSION}}"
+          branch: ${{ env.LTS_VERSION}}
+          branch-suffix: timestamp
+          title: "chore(cd): update Spinnaker version to ${{ env.LTS_VERSION}}"
+          labels: |
+            autoMerge
+            ltsUpdate
+          body: |
+            Event
+            ```
+            ${{ toJson(github.event.client_payload) }}
+            ```
