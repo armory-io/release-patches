@@ -22,7 +22,7 @@ jobs:
         run: |
           echo "Updating spinnaker version to ${LTS_VERSION}"
           SERVICE_QUERY="(.spec.spinnakerConfig.config.version)"
-          echo ::set-output name=query::"$SERVICE_QUERY = ${LTS_VERSION}"
+          echo ::set-output name=query::"$SERVICE_QUERY = \"${LTS_VERSION}\""
 
       - name: Update Stack File
         uses: mikefarah/yq@v4.6.1
