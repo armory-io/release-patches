@@ -1,0 +1,27 @@
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  kustomize:
+    clouddriver:
+      deployment:
+        patchesStrategicMerge:
+          - |
+            spec:
+              template:
+                spec:
+                  initContainers:
+                  - name: kubesvc-plugin
+                    image: docker.io/armory/kubesvc-plugin:0.10.0
+                    volumeMounts:
+                      - mountPath: /opt/plugin/target
+                        name: kubesvc-plugin-vol
+                  containers:
+                  - name: clouddriver
+                    volumeMounts:
+                      - mountPath: /opt/clouddriver/lib/plugins
+                        name: kubesvc-plugin-vol
+                  volumes:
+                  - name: kubesvc-plugin-vol
+                    emptyDir: {}
