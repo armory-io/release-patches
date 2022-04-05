@@ -13,15 +13,19 @@
   },
   "pipelines": [
      {{ local_module "modules/pipelines/pipeline.deploy-destroy-spinnaker.module"
-        "k8s_account" "kubernetes-eks-prod"
-        "namespace" "namespace_to_create_n_deploy"
-        "pipeline" "pipeline_name"
-     }}
-    ,{{ local_module "modules/pipelines/pipeline.deploy-destroy-spinnaker.module"
          "k8s_account" "kubernetes-eks-prod"
          "team" "dynamo"
          "namespace" "other-ephemeral-spinnaker-sandbox"
-         "pipeline" "bake-spinnaker-from-other-repo-ephemeral"
+         "pipeline" "create/destroy spinnaker instance"
+         "spinnaker_gitrepo_account" "gitrepo-armory"
+         "spinnaker_gitrepo" "https://github.com/armory-io/managed-team-integrations.git"
+         "spinnaker_gitrepo_branch" "main"
+         "spinnaker_gitrepo_path" "lts-test-environment/managed-services/us-east-1/kustomization.yml"
+      }}
+      ,{{ local_module "modules/pipelines/pipeline.deploy-stack-spinnaker.module"
+         "k8s_account" "kubernetes-eks-prod"
+         "team" "dynamo"
+         "pipeline" "create/destroy spinnaker instance by stack"
          "spinnaker_gitrepo_account" "gitrepo-armory"
          "spinnaker_gitrepo" "https://github.com/armory-io/managed-team-integrations.git"
          "spinnaker_gitrepo_branch" "main"

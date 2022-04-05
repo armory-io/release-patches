@@ -1,0 +1,819 @@
+{
+  "application": "{{ var "app_name" }}",
+  "name": "{{ var "pipeline" }}",
+  "description": "{{ var "pipeline_desc" ?: "" }}",
+  "keepWaitingPipelines": false,
+  "limitConcurrent": true,
+  "spelEvaluator": "v4",
+  "triggers": {{ var "triggers" ?: [] }},
+  "parameterConfig": [
+     {
+       "default": "816e282c644d1e3e8adf1cccfafbf2072ca82333",
+       "description": "The VCS sha from our armory-stack repository",
+       "hasOptions": false,
+       "label": "stack-sha",
+       "name": "stack-sha",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/clouddriver-armory:2021.10.01.20.54.09.release-2.26.x",
+       "description": "Clouddriver image",
+       "hasOptions": false,
+       "label": "clouddriver_image",
+       "name": "clouddriver_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/deck-armory:2021.09.23.01.58.49.release-2.26.x",
+       "description": "Deck image",
+       "hasOptions": false,
+       "label": "deck_image",
+       "name": "deck_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/dinghy:2021.09.09.19.58.03.release-2.26.x",
+       "description": "Dinghy image",
+       "hasOptions": false,
+       "label": "dinghy_image",
+       "name": "dinghy_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/echo-armory:2021.10.01.18.15.39.release-2.26.x",
+       "description": "Echo image",
+       "hasOptions": false,
+       "label": "echo_image",
+       "name": "echo_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/fiat-armory:2021.12.14.23.03.49.release-2.26.x",
+       "description": "Fiat image",
+       "hasOptions": false,
+       "label": "fiat_image",
+       "name": "fiat_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/front50-armory:2021.10.01.21.33.11.release-2.26.x",
+       "description": "Front50 image",
+       "hasOptions": false,
+       "label": "front50_image",
+       "name": "front50_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/gate-armory:2021.12.15.17.37.12.release-2.26.x",
+       "description": "Gate image",
+       "hasOptions": false,
+       "label": "gate_image",
+       "name": "gate_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/igor-armory:2021.10.01.23.09.16.release-2.26.x",
+       "description": "Igor image",
+       "hasOptions": false,
+       "label": "igor_image",
+       "name": "igor_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/kayenta-armory:2021.10.01.23.43.42.release-2.26.x",
+       "description": "Kayenta image",
+       "hasOptions": false,
+       "label": "kayenta_image",
+       "name": "kayenta_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/orca-armory:2021.10.01.23.39.04.release-2.26.x",
+       "description": "Orca image",
+       "hasOptions": false,
+       "label": "orca_image",
+       "name": "orca_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/rosco-armory:2021.12.13.20.38.49.release-2.26.x",
+       "description": "Rosco image",
+       "hasOptions": false,
+       "label": "rosco_image",
+       "name": "rosco_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "armory/terraformer:2021.09.17.18.01.39.release-2.26.x",
+       "description": "Terraformer image",
+       "hasOptions": false,
+       "label": "terraformer_image",
+       "name": "terraformer_image",
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "us-west-2",
+       "description": "AWS region where the Front50 pipelines will be stored in an s3 folder per sha",
+       "hasOptions": true,
+       "label": "aws_region",
+       "name": "aws_region",
+       "options": [
+          {
+             "value": "us-west-2"
+          }
+       ],
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "spinnaker",
+       "description": "Kubernetes provider target account to deploy the environment",
+       "hasOptions": true,
+       "label": "k8s_account",
+       "name": "k8s_account",
+       "options": [
+          {
+             "value": "spinnaker"
+          }
+       ],
+       "pinned": true,
+       "required": true
+     },
+     {
+       "default": "abc123",
+       "description": "Local SQL password",
+       "hasOptions": false,
+       "label": "spin_password",
+       "name": "spin_password",
+       "options": [
+          {
+             "value": ""
+          }
+       ],
+       "pinned": false,
+       "required": true
+     },
+     {
+       "default": "35.164.75.27/32",
+       "description": "IP to whitelist for accessing Deck and Gate",
+       "hasOptions": true,
+       "label": "whitelist_ips",
+       "name": "whitelist_ips",
+       "options": [
+          {
+             "value": "35.164.75.27/32"
+          },
+          {
+             "value": "0.0.0.0/0"
+          }
+       ],
+       "pinned": true,
+       "required": true
+     }
+  ],
+  "notifications": {{ var "notifications" ?: [] }},
+  "stages": [
+     {{ local_module "modules/stages/stage.deploy-text-manifest.module"
+        "ref_id" "1"
+        "stage_name" "Deploy (Namespace)"
+        "manifests" [
+           {
+              "apiVersion": "v1",
+              "kind": "Namespace",
+              "metadata": {
+                 "name": "${parameters.namespace}"
+              }
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.tf-output-gitrepo.module"
+        "ref_id" "2"
+        "gitrepo_branch" "master"
+        "gitrepo_path" "terraform/tfstate-backend"
+        "stage_name" "Retrieve (Backend)"
+        "tf_version" "1.0.5"
+     }},
+     {{ local_module "modules/stages/stage.deploy-text-manifest.module"
+        "ref_id" "3"
+        "stage_dependency" [
+           "1"
+        ]
+        "stage_name" "Deploy (Secret)"
+        "manifests" [
+           {
+              "apiVersion": "v1",
+              "data": {
+                 "SPIN_PASSWORD": "${#toBase64(parameters.spin_password)}"
+              },
+              "kind": "Secret",
+              "metadata": {
+                 "annotations": {
+                    "strategy.spinnaker.io/versioned": "false"
+                 },
+                 "labels": {
+                    "app": "spin-mysql",
+                    "purpose": "database"
+                 },
+                 "name": "spin-secrets",
+                 "namespace": "${parameters.namespace}"
+              },
+              "type": "Opaque"
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.bake-kustomize-gitrepo.module"
+        "ref_id" "4"
+        "stage_dependency" [
+           "1"
+        ]
+        "artifact_name" "spin-redis.yml"
+        "stage_name" "Bake (Redis)"
+        "gitrepo_branch" "master"
+        "gitrepo_path" "misc-k8s-files/redis/kustomization.yml"
+     }},
+     {{ local_module "modules/stages/stage.bake-kustomize-gitrepo.module"
+        "ref_id" "5"
+        "stage_dependency" [
+           "1"
+        ]
+        "artifact_name" "spin-sa.yml"
+        "stage_name" "Bake (Service Account)"
+        "gitrepo_branch" "master"
+        "gitrepo_path" "misc-k8s-files/service-account/kustomization.yml"
+     }},
+     {{ local_module "modules/stages/stage.bake-kustomize-gitrepo.module"
+        "ref_id" "6"
+        "stage_dependency" [
+           "1"
+        ]
+        "artifact_name" "spin-tools.yml"
+        "stage_name" "Bake (Tools)"
+        "gitrepo_branch" "master"
+        "gitrepo_path" "misc-k8s-files/tools/kustomization.yml"
+     }},
+     {{ local_module "modules/stages/stage.evaluate-tf-artifacts.module"
+        "ref_id" "7"
+        "stage_dependency" [
+           "2"
+        ]
+        "stage_name" "Artifact (Backend)"
+        "art_contents" [
+           {
+              "contents": "bucket=\"${#stage('Retrieve (Backend)')[\"context\"][\"status\"][\"outputs\"][\"tfstate_bucket\"][\"value\"]}\"\nregion=\"${#stage('Retrieve (Backend)')[\"context\"][\"status\"][\"outputs\"][\"aws_region\"][\"value\"]}\"\nkey=\"${parameters.owner}/spin_prerequisites.tfstate\"",
+              "id": "prerequisites-backend.tf",
+              "name": "prerequisites-backend.tf"
+           }
+        ]
+        "expected_art" [
+           {
+              "defaultArtifact": {
+                 "customKind": true,
+                 "id": "prerequisites-backend.tf"
+              },
+              "displayName": "prerequisites-backend.tf",
+              "id": "prerequisites-backend.tf",
+              "matchArtifact": {
+                 "artifactAccount": "embedded-artifact",
+                 "customKind": true,
+                 "id": "prerequisites-backend.tf",
+                 "name": "prerequisites-backend.tf",
+                 "type": "embedded/base64"
+              },
+              "useDefaultArtifact": false,
+              "usePriorArtifact": false
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.bake-kustomize-gitrepo.module"
+        "ref_id" "8"
+        "stage_dependency" [
+           "3"
+        ]
+        "artifact_name" "spin-mysql.yml"
+        "stage_name" "Bake (MySQL)"
+        "gitrepo_branch" "master"
+        "gitrepo_path" "misc-k8s-files/mysql/kustomization.yml"
+     }},
+     {{ local_module "modules/stages/stage.deploy-artifact-id.module"
+        "ref_id" "9"
+        "stage_dependency" [
+           "4"
+        ]
+        "manifest_id" "spin-redis.yml"
+        "stage_name" "Deploy (Redis)"
+     }},
+     {{ local_module "modules/stages/stage.deploy-artifact-id.module"
+        "ref_id" "10"
+        "stage_dependency" [
+           "5"
+        ]
+        "manifest_id" "spin-sa.yml"
+        "stage_name" "Deploy (Service Account)"
+     }},
+     {{ local_module "modules/stages/stage.deploy-artifact-id.module"
+        "ref_id" "11"
+        "stage_dependency" [
+           "6"
+        ]
+        "manifest_id" "spin-tools.yml"
+        "stage_name" "Deploy (Tools)"
+     }},
+     {{ local_module "modules/stages/stage.tf-apply-gitrepo.module"
+        "ref_id" "12"
+        "stage_dependency" [
+           "7"
+        ]
+        "gitrepo_branch" "master"
+        "gitrepo_path" "terraform/spin-prerequisites"
+        "stage_name" "Apply (Prerequisites)"
+        "tf_version" "1.0.5"
+        "overrides" {
+           "aws_region": "${parameters.aws_region}",
+           "owner": "${parameters.owner}"
+        }
+        "backend_art" {
+           "account": "embedded-artifact",
+           "id": "prerequisites-backend.tf"
+        }
+     }},
+     {{ local_module "modules/stages/stage.deploy-artifact-id.module"
+        "ref_id" "13"
+        "stage_dependency" [
+           "8"
+        ]
+        "manifest_id" "spin-mysql.yml"
+        "stage_name" "Deploy (MySQL)"
+     }},
+     {{ local_module "modules/stages/stage.tf-output-gitrepo.module"
+        "ref_id" "14"
+        "stage_dependency" [
+           "12"
+        ]
+        "gitrepo_branch" "master"
+        "gitrepo_path" "terraform/spin-prerequisites"
+        "stage_name" "Output (Prerequisites)"
+        "tf_version" "1.0.5"
+        "backendArtifact" "prerequisites-backend.tf"
+     }},
+     {{ local_module "modules/stages/stage.evaluate-vars.module"
+        "ref_id" "15"
+        "stage_dependency" [
+           "14"
+        ]
+        "stage_name" "Retrieve (Prerequisites)"
+        "variables" [
+           {
+              "key": "SPIN_BUCKET",
+              "value": "${#stage('Output (Prerequisites)')[\"outputs\"][\"status\"][\"outputs\"][\"spin_file_store\"][\"value\"]}"
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.bake-spinnaker-kustomize-gitrepo.module"
+        "ref_id" "16"
+        "stage_dependency" [
+           "15",
+           "13",
+           "10",
+           "9"
+        ]
+        "artifact_name" "spinnaker.yml"
+        "stage_name" "Bake (Spinnaker)"
+     }},
+     {{ local_module "modules/stages/stage.deploy-artifact-github.module"
+        "ref_id" "17"
+        "stage_dependency" [
+           "16"
+        ]
+        "github_path" "spin-environment/resources/expose/patch-nodeport.yml"
+        "github_branch" "master"
+        "stage_name" "Deploy (NodePort)"
+     }},
+     {{ local_module "modules/stages/stage.deploy-artifact-github.module"
+        "ref_id" "18"
+        "stage_dependency" [
+           "17"
+        ]
+        "github_path" "spin-environment/resources/expose/patch-ingress.yml"
+        "github_branch" "master"
+        "stage_name" "Deploy (Ingress)"
+     }},
+     {{ local_module "modules/stages/stage.find-artifact-from-resource.module"
+        "ref_id" "19"
+        "stage_dependency" [
+           "18"
+        ]
+        "stage_name" "Retrieve (ALB)"
+        "kind" "ingress"
+        "kind_name" "${parameters.namespace}-ingress"
+     }},
+     {{ local_module "modules/stages/stage.evaluate-vars.module"
+        "ref_id" "20"
+        "stage_dependency" [
+           "19"
+        ]
+        "stage_name" "Retrieve (FQDN)"
+        "variables" [
+           {
+              "key": "ALB_HOSTNAME",
+              "value": "${#stage('Retrieve (ALB)')['outputs']['manifest']['status']['loadBalancer']['ingress'][0]['hostname']}"
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.deploy-artifact-id.module"
+        "ref_id" "21"
+        "stage_dependency" [
+           "20"
+        ]
+        "manifest_id" "spinnaker.yml"
+        "stage_name" "Deploy (Spinnaker)"
+     }},
+     {{ local_module "modules/stages/stage.manual-judgment.module"
+        "ref_id" "22"
+        "stage_dependency" [
+           "21"
+        ]
+        "stage_name" "Confirmation (Destroy)"
+        "timeout" 259200000
+        "judge_inputs" [
+           {
+              "value": "Stop"
+           },
+           {
+              "value": "Destroy"
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.check-precondition.module"
+        "ref_id" "23"
+        "stage_dependency" [
+           "22"
+        ]
+        "stage_name" "Manual (Destroy)"
+        "conditions" [
+           {
+              "context": {
+                 "expression": "${ #judgment('Confirmation (Destroy)').equals('Destroy')}"
+              },
+              "failPipeline": true,
+              "type": "expression"
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.check-precondition.module"
+        "ref_id" "24"
+        "stage_dependency" [
+           "22"
+        ]
+        "stage_name" "Timeout (Destroy)"
+        "conditions" [
+           {
+              "context": {
+                 "stageName": "Confirmation (Destroy)",
+                 "stageStatus": "FAILED_CONTINUE"
+              },
+              "failPipeline": true,
+              "type": "stageStatus"
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.deploy-runjob-manifest.module"
+        "ref_id" "25"
+        "stage_dependency" [
+           "23"
+        ]
+        "stage_name" "Destroy (Spinnaker - Manual)"
+        "manifests" {
+           "apiVersion": "batch/v1",
+           "kind": "Job",
+           "metadata": {
+              "annotations": {
+                 "strategy.spinnaker.io/recreate": "true"
+              },
+              "generateName": "destroy-spinnaker-",
+              "labels": {
+                 "app": "destroy-spinnaker",
+                 "purpose": "destroy-spinnaker"
+              },
+              "namespace": "${parameters.namespace}"
+           },
+           "spec": {
+              "backoffLimit": 4,
+              "template": {
+                 "spec": {
+                    "containers": [
+                       {
+                          "command": [
+                             "/bin/sh",
+                             "-c",
+                             "kubectl -n \"${parameters.namespace}\" delete spinsvc spinnaker || true"
+                          ],
+                          "image": "bitnami/kubectl",
+                          "name": "destroy-spinnaker"
+                       }
+                    ],
+                    "restartPolicy": "Never",
+                    "serviceAccount": "spin-sa",
+                    "serviceAccountName": "spin-sa"
+                 }
+              }
+           }
+        }
+     }},
+     {{ local_module "modules/stages/stage.deploy-runjob-manifest.module"
+        "ref_id" "26"
+        "stage_dependency" [
+           "24"
+        ]
+        "stage_name" "Destroy (Spinnaker - Timeout)"
+        "manifests" {
+           "apiVersion": "batch/v1",
+           "kind": "Job",
+           "metadata": {
+              "annotations": {
+                 "strategy.spinnaker.io/recreate": "true"
+              },
+              "generateName": "destroy-spinnaker-",
+              "labels": {
+                 "app": "destroy-spinnaker",
+                 "purpose": "destroy-spinnaker"
+              },
+              "namespace": "${parameters.namespace}"
+           },
+           "spec": {
+              "backoffLimit": 4,
+              "template": {
+                 "spec": {
+                    "containers": [
+                       {
+                          "command": [
+                             "/bin/sh",
+                             "-c",
+                             "kubectl -n \"${parameters.namespace}\" delete spinsvc spinnaker || true"
+                          ],
+                          "image": "bitnami/kubectl",
+                          "name": "destroy-spinnaker"
+                       }
+                    ],
+                    "restartPolicy": "Never",
+                    "serviceAccount": "spin-sa",
+                    "serviceAccountName": "spin-sa"
+                 }
+              }
+           }
+        }
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "27"
+        "stage_dependency" [
+           "25"
+        ]
+        "stage_name" "Cleanup (Job - Manual)"
+        "period" 5
+        "kinds" [
+           "job"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "destroy-spinnaker"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "28"
+        "stage_dependency" [
+           "26"
+        ]
+        "stage_name" "Cleanup (Job - Timeout)"
+        "period" 5
+        "kinds" [
+           "job"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "destroy-spinnaker"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "29"
+        "stage_dependency" [
+           "25"
+        ]
+        "stage_name" "Cleanup (Tools - Manual)"
+        "period" 5
+        "kinds" [
+           "deployment",
+           "pod"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "tools"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "30"
+        "stage_dependency" [
+           "26"
+        ]
+        "stage_name" "Cleanup (Tools - Timeout)"
+        "period" 5
+        "kinds" [
+           "deployment",
+           "pod"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "tools"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "31"
+        "stage_dependency" [
+           "25"
+        ]
+        "stage_name" "Cleanup (Redis - Manual)"
+        "period" 5
+        "kinds" [
+           "deployment",
+           "pod",
+           "service"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "key-value-store"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "32"
+        "stage_dependency" [
+           "26"
+        ]
+        "stage_name" "Cleanup (Redis - Timeout)"
+        "period" 5
+        "kinds" [
+           "deployment",
+           "pod",
+           "service"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "key-value-store"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "33"
+        "stage_dependency" [
+           "25"
+        ]
+        "stage_name" "Cleanup (MySQL - Manual)"
+        "period" 5
+        "kinds" [
+           "deployment",
+           "pod",
+           "service"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "database"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "34"
+        "stage_dependency" [
+           "26"
+        ]
+        "stage_name" "Cleanup (MySQL - Timeout)"
+        "period" 5
+        "kinds" [
+           "deployment",
+           "pod",
+           "service"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "database"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "35"
+        "stage_dependency" [
+           "25"
+        ]
+        "stage_name" "Cleanup (Ingress - Manual)"
+        "period" 5
+        "kinds" [
+           "service",
+           "ingress"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "ingress"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-label-manifest.module"
+        "ref_id" "36"
+        "stage_dependency" [
+           "26"
+        ]
+        "stage_name" "Cleanup (Ingress - Timeout)"
+        "period" 5
+        "kinds" [
+           "service",
+           "ingress"
+        ]
+        "labels" [
+           {
+              "key": "purpose",
+              "kind": "EQUALS",
+              "values": [
+                 "ingress"
+              ]
+           }
+        ]
+     }},
+     {{ local_module "modules/stages/stage.delete-static-manifest.module"
+        "ref_id" "37"
+        "stage_dependency" [
+           "27",
+           "29",
+           "31",
+           "33",
+           "35"
+        ]
+        "stage_name" "Cleanup (Namespace - Manual)"
+        "kind" "namespace"
+        "kind_name" "${parameters.namespace}"
+        "period" 5
+     }},
+     {{ local_module "modules/stages/stage.delete-static-manifest.module"
+        "ref_id" "38"
+        "stage_dependency" [
+           "28",
+           "30",
+           "32",
+           "34",
+           "36"
+        ]
+        "stage_name" "Cleanup (Namespace - Timeout)"
+        "kind" "namespace"
+        "kind_name" "${parameters.namespace}"
+        "period" 5
+     }}
+  ]
+}
