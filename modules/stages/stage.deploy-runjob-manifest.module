@@ -1,0 +1,19 @@
+{
+   "account": "${parameters.k8s_account}",
+   "alias": "runJob",
+   "application": "{{ var "app_name" }}",
+   "cloudProvider": "kubernetes",
+   "completeOtherBranchesThenFail": false,
+   "consumeArtifactSource": "none",
+   "continuePipeline": false,
+   "credentials": "${parameters.k8s_account}",
+   "failPipeline": false,
+   "manifest": {{ var "manifests" ?: {} }},
+   "name": "{{ var "stage_name" }}",
+   "refId": "{{ var "ref_id" }}",
+   "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+   "skipExpressionEvaluation": {{ var "skip_spel" ?: "false" }},
+   "restrictExecutionDuringTimeWindow": false,
+   "source": "text",
+   "type": "runJobManifest"
+}

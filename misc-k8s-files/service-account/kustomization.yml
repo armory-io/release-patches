@@ -1,0 +1,6 @@
+namespace: '${parameters.namespace}'
+
+resources:
+  - cluster_role.yml
+  - service_account.yml
+  - cluster_role_binding.yml

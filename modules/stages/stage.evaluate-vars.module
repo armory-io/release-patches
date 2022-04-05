@@ -1,0 +1,10 @@
+{
+   "failOnFailedExpressions": true,
+   "name": "{{ var "stage_name" }}",
+   "refId": "{{ var "ref_id" }}",
+   "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+   "isNew": true,
+   "type": "evaluateVariables",
+   "variables": {{ var "variables" ?: [] }},
+   "stageEnabled": {{ var "stage_enabled" ?: {} }}
+}

@@ -1,0 +1,31 @@
+{
+  "application": "{{ var "app_name" }}",
+  "globals": {
+     "app_name": "spinnaker-sandbox-integrations",
+     "gitrepo_account": "gitrepo",
+     "gitrepo": "https://github.com/armory-io/spinnaker-sandbox-integrations-template.git",
+     "spinnaker_gitrepo_account": "gitrepo",
+     "spinnaker_gitrepo": "https://github.com/armory-io/spinnaker-sandbox-integrations-template.git",
+     "spinnaker_gitrepo_branch": "master",
+     "spinnaker_gitrepo_path": "spin-environment/kustomization.yml",
+     "github_account": "github",
+     "github_api": "https://api.github.com/repos/armory-io/spinnaker-sandbox-integrations-template"
+  },
+  "pipelines": [
+     {{ local_module "modules/pipelines/pipeline.deploy-destroy-spinnaker.module"
+        "k8s_account" "target_k8s_account"
+        "namespace" "namespace_to_create_n_deploy"
+        "pipeline" "pipeline_name"
+     }}
+    ,{{ local_module "modules/pipelines/pipeline.deploy-destroy-spinnaker.module"
+         "k8s_account" "spinnaker"
+         "team" "atipo"
+         "namespace" "other-ephemeral-spinnaker-sandbox"
+         "pipeline" "bake-spinnaker-from-other-repo-ephemeral"
+         "spinnaker_gitrepo_account" "gitrepo-armory"
+         "spinnaker_gitrepo" "https://github.com/armory-io/managed-team-integrations.git"
+         "spinnaker_gitrepo_branch" "main"
+         "spinnaker_gitrepo_path" "spin-environments/managed-services/us-east-1/kustomization.yml"
+      }}
+  ]
+}

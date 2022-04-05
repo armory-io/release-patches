@@ -1,0 +1,27 @@
+{
+  "action": "apply",
+  "refId": "{{ var "ref_id" }}",
+  "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+  "artifacts": [
+     {
+        "account": "{{ var "gitrepo_account" }}",
+        "artifact": {
+           "artifactAccount": "{{ var "gitrepo_account" }}",
+           "id": "{{ var "gitrepo_account" }}",
+           "reference": "{{ var "gitrepo" }}",
+           "type": "git/repo",
+           "version": "{{ var "gitrepo_branch" }}"
+        }
+     }
+  ],
+  "backendArtifact": {{ var "backend_art" ?: {} }},
+  "completeOtherBranchesThenFail": false,
+  "continuePipeline": false,
+  "dir": "{{ var "gitrepo_path" }}",
+  "expectedArtifacts": {{ var "expectedArtifacts" ?: [] }},
+  "failPipeline": false,
+  "name": "{{ var "stage_name" }}",
+  "overrides": {{ var "overrides" ?: {} }},
+  "terraformVersion": "{{ var "tf_version" }}",
+  "type": "terraform"
+}

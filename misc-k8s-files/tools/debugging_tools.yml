@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: debugging-tools
+    purpose: tools
+  name: debugging-tools
+  namespace: '${parameters.namespace}'
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: debugging-tools
+      purpose: tools
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: debugging-tools
+        purpose: tools
+    spec:
+      containers:
+        - command:
+            - tail
+            - -f
+            - /dev/null
+          image: armory/debugging-tools:latest
+          imagePullPolicy: IfNotPresent
+          name: debugging-tools
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

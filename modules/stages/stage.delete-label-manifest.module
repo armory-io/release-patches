@@ -1,0 +1,19 @@
+{
+   "account": "${parameters.k8s_account}",
+   "app": "{{ var "app_name" }}",
+   "cloudProvider": "kubernetes",
+   "kinds": {{ var "kinds" ?: [] }},
+   "labelSelectors": {
+      "selectors": {{ var "labels" ?: [] }}
+   },
+   "location": "{{ var "namespace" }}",
+   "mode": "label",
+   "name": "{{ var "stage_name" }}",
+   "refId": "{{ var "ref_id" }}",
+   "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+   "options": {
+      "cascading": true,
+      "gracePeriodSeconds": "{{ var "period" }}"
+   },
+   "type": "deleteManifest"
+}

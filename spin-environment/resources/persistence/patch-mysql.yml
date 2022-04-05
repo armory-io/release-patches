@@ -1,0 +1,100 @@
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      clouddriver:
+        sql:
+          enabled: true
+          unknown-agent-cleanup-agent:
+            enabled: true
+          taskRepository:
+            enabled: true
+          cache:
+            enabled: true
+            readBatchSize: 500
+            writeBatchSize: 300
+          scheduler:
+            enabled: false
+          connectionPools:
+            default:
+              default: true
+              jdbcUrl: jdbc:mysql://spin-mysql:3306/clouddriver?useSSL=false&useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_unicode_ci
+              user: clouddriver_service
+              password: encrypted:k8s!n:spin-secrets!k:SPIN_PASSWORD
+            tasks:
+              user: clouddriver_service
+              password: encrypted:k8s!n:spin-secrets!k:SPIN_PASSWORD
+              jdbcUrl: jdbc:mysql://spin-mysql:3306/clouddriver?useSSL=false&useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_unicode_ci
+          migration:
+            user: clouddriver_migrate
+            password: encrypted:k8s!n:spin-secrets!k:SPIN_PASSWORD
+            jdbcUrl: jdbc:mysql://spin-mysql:3306/clouddriver?useSSL=false&useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_unicode_ci
+        dualTaskRepository:
+          enabled: false
+          primaryClass: com.netflix.spinnaker.clouddriver.sql.SqlTaskRepository
+          previousClass: com.netflix.spinnaker.clouddriver.data.task.jedis.RedisTaskRepository
+        redis:
+          enabled: true
+          cache:
+            enabled: false
+          scheduler:
+            enabled: true
+          taskRepository:
+            enabled: false
+
+      orca:
+        sql:
+          enabled: true
+          connectionPool:
+            jdbcUrl: jdbc:mysql://spin-mysql:3306/orca?useSSL=false&useUnicode=true&characterEncoding=utf8
+            user: orca_service
+            password: encrypted:k8s!n:spin-secrets!k:SPIN_PASSWORD
+            connectionTimeout: 5000
+            maxLifetime: 30000
+            maxPoolSize: 50
+          migration:
+            jdbcUrl: jdbc:mysql://spin-mysql:3306/orca?useSSL=false&useUnicode=true&characterEncoding=utf8
+            user: orca_migrate
+            password: encrypted:k8s!n:spin-secrets!k:SPIN_PASSWORD
+        executionRepository:
+          sql:
+            enabled: true
+          redis:
+            enabled: false
+        monitor:
+          activeExecutions:
+            redis: false
+
+#      front50:
+#        sql:
+#          enabled: true
+#          connectionPools:
+#            default:
+#              default: true
+#              jdbcUrl: jdbc:mysql://spin-mysql:3306/front50?useSSL=false&useUnicode=true&characterEncoding=utf8
+#              user: front50_service
+#              password: encrypted:k8s!n:spin-secrets!k:SPIN_PASSWORD
+#          migration:
+#            user: front50_migrate
+#            password: encrypted:k8s!n:spin-secrets!k:SPIN_PASSWORD
+#            jdbcUrl: jdbc:mysql://spin-mysql:3306/front50?useSSL=false&useUnicode=true&characterEncoding=utf8
+#        spinnaker:
+#          s3:
+#            enabled: true
+
+#      fiat:
+#        sql:
+#          connectionPools:
+#            default:
+#              default: true
+#              jdbcUrl: jdbc:mysql://spin-mysql:3306/fiat?useSSL=false&useUnicode=true&characterEncoding=utf8
+#              password: encrypted:k8s!n:spin-secrets!k:SPIN_PASSWORD
+#              user: fiat_service
+#          enabled: true
+#          migration:
+#            jdbcUrl: jdbc:mysql://spin-mysql:3306/fiat?useSSL=false&useUnicode=true&characterEncoding=utf8
+#            password: encrypted:k8s!n:spin-secrets!k:SPIN_PASSWORD
+#            user: fiat_migrate

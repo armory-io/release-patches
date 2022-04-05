@@ -1,0 +1,14 @@
+{
+   "completeOtherBranchesThenFail": false,
+   "continuePipeline": true,
+   "failPipeline": false,
+   "instructions": "{{ var "instructions" ?: "" }}",
+   "judgmentInputs": {{ var "judge_inputs" ?: [] }},
+   "name": "{{ var "stage_name" }}",
+   "refId": "{{ var "ref_id" }}",
+   "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+   "notifications": [],
+   "propagateAuthenticationContext": false,
+   "stageTimeoutMs": {{ var "timeout" }},
+   "type": "manualJudgment"
+}

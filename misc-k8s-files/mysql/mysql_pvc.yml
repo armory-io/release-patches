@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: spin-mysql-pvc
+  namespace: '${parameters.namespace}'
+  labels:
+    app: spin-mysql
+    purpose: database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

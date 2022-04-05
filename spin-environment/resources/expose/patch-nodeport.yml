@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+  labels:
+    app: spin
+    cluster: spin-gate
+    purpose: ingress
+  name: spin-gate-custom
+  namespace: '${parameters.namespace}'
+spec:
+  type: NodePort
+  ports:
+  - port: 8084
+    protocol: TCP
+    targetPort: 8084
+  selector:
+    app: spin
+    cluster: spin-gate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+  labels:
+    app: spin
+    cluster: spin-deck
+    purpose: ingress
+  name: spin-deck-custom
+  namespace: '${parameters.namespace}'
+spec:
+  type: NodePort
+  ports:
+  - port: 9000
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: spin
+    cluster: spin-deck
+

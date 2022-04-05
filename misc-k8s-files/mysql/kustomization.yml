@@ -1,0 +1,7 @@
+namespace: '${parameters.namespace}'
+
+resources:
+  - mysql_service.yml
+  - mysql_pvc.yml
+  - mysql_deployment.yml
+  - mysql_init.yml

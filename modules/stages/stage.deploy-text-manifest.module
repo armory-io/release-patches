@@ -1,0 +1,14 @@
+{
+   "account": "${parameters.k8s_account}",
+   "cloudProvider": "kubernetes",
+   "manifests": {{ var "manifests" ?: "[]" }},
+   "moniker": {
+      "app": "{{ var "app_name" }}"
+   },
+   "name": "{{ var "stage_name" }}",
+   "refId": "{{ var "ref_id" }}",
+   "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+   "skipExpressionEvaluation": {{ var "skip_spel" ?: "false" }},
+   "source": "text",
+   "type": "deployManifest"
+}

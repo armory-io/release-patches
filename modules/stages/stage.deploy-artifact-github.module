@@ -1,0 +1,23 @@
+{
+   "account": "${parameters.k8s_account}",
+   "cloudProvider": "kubernetes",
+   "completeOtherBranchesThenFail": false,
+   "continuePipeline": false,
+   "failPipeline": false,
+   "manifestArtifact": {
+      "artifactAccount": "{{ var "github_account" }}",
+      "id": "{{ var "github_account" }}",
+      "reference": "{{ var "github_api" }}/contents/{{ var "github_path" }}",
+      "type": "github/file",
+      "version": "{{ var "github_branch" }}"
+   },
+   "moniker": {
+    "app": "{{ var "app_name" }}"
+   },
+   "name": "{{ var "stage_name" }}",
+   "refId": "{{ var "ref_id" }}",
+   "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+   "skipExpressionEvaluation": {{ var "skip_spel" ?: "false" }},
+   "source": "artifact",
+   "type": "deployManifest"
+}

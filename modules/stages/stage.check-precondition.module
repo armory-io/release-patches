@@ -1,0 +1,11 @@
+{
+   "completeOtherBranchesThenFail": true,
+   "continuePipeline": false,
+   "failPipeline": false,
+   "name": "{{ var "stage_name" }}",
+   "refId": "{{ var "ref_id" }}",
+   "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+   "preconditions": {{ var "conditions" ?: [] }},
+   "stageEnabled": {{ var "stage_enabled" ?: {} }},
+   "type": "checkPreconditions"
+}

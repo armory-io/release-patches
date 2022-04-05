@@ -1,0 +1,5 @@
+namespace: '${parameters.namespace}'
+
+resources:
+  - redis_deployment.yml
+  - redis_service.yml

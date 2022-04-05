@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spin-mysql
+  namespace: '${parameters.namespace}'
+  labels:
+    app: spin-mysql
+    purpose: database
+spec:
+  selector:
+    matchLabels:
+      app: spin-mysql
+      purpose: database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: spin-mysql
+        purpose: database
+    spec:
+      containers:
+      - image: mysql:5.7
+        name: mysql
+        args:
+          - "--ignore-db-dir=lost+found"
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+#          value: password
+          valueFrom:
+            secretKeyRef:
+              name: spin-secrets
+              key: SPIN_PASSWORD
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+        - name: init-db
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: spin-mysql-pvc
+      - name: init-db
+        configMap:
+          name: spin-mysql-init

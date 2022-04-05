@@ -1,0 +1,42 @@
+{
+  "completeOtherBranchesThenFail": false,
+  "continuePipeline": false,
+  "expectedArtifacts": [
+     {
+        "defaultArtifact": {
+           "customKind": true,
+           "id": "{{ var "artifact_name" }}"
+        },
+        "displayName": "{{ var "artifact_name" }}",
+        "id": "{{ var "artifact_name" }}",
+        "matchArtifact": {
+           "artifactAccount": "embedded-artifact",
+           "customKind": false,
+           "id": "{{ var "artifact_name" }}",
+           "name": "{{ var "artifact_name" }}",
+           "type": "embedded/base64"
+        },
+        "useDefaultArtifact": false,
+        "usePriorArtifact": false
+    }
+  ],
+  "failPipeline": false,
+  "inputArtifact": {
+     "account": "{{ var "gitrepo_account" }}",
+     "artifact": {
+        "artifactAccount": "{{ var "gitrepo_account" }}",
+        "customKind": true,
+        "id": "{{ var "gitrepo_account" }}",
+        "reference": "{{ var "gitrepo" }}",
+        "type": "git/repo",
+        "version": "{{ var "gitrepo_branch" }}"
+     }
+  },
+  "kustomizeFilePath": "{{ var "gitrepo_path" }}",
+  "name": "{{ var "stage_name" }}",
+  "refId": "{{ var "ref_id" }}",
+  "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+  "overrides": {},
+  "templateRenderer": "KUSTOMIZE",
+  "type": "bakeManifest"
+}

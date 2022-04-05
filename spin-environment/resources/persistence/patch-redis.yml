@@ -1,0 +1,15 @@
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      gate:
+        redis:
+          configuration:
+            secure: true
+    service-settings:
+      redis:
+        overrideBaseUrl: redis://spin-redis:6379
+        skipLifeCycleManagement: true

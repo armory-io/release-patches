@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spin-redis
+    purpose: key-value-store
+  name: spin-redis
+  namespace: '${parameters.namespace}'
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: spin-redis
+      purpose: key-value-store
+  template:
+    metadata:
+      labels:
+        app: spin-redis
+        purpose: key-value-store
+    spec:
+      containers:
+      - env:
+        - name: MASTER
+          value: "true"
+        image: docker.io/redis:latest
+        name: redis
+        ports:
+        - containerPort: 6379
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 6379
+          timeoutSeconds: 1
+      restartPolicy: Always

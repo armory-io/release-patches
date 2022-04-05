@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/inbound-cidrs: ${parameters.whitelist_ips}
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/tags: Name=${parameters.namespace}-ingress
+    kubernetes.io/ingress.class: alb
+  name: ${parameters.namespace}-ingress
+  namespace: '${parameters.namespace}'
+  labels:
+    app: spin
+    purpose: ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              serviceName: spin-gate-custom
+              servicePort: 8084
+            path: /api/v1/*
+          - backend:
+              serviceName: spin-deck-custom
+              servicePort: 9000
+            path: /*

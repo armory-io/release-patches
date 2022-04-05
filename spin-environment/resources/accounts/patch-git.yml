@@ -1,0 +1,12 @@
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    profiles:
+      clouddriver:
+        artifacts:
+          gitrepo:
+            clone-retention-minutes: 60
+            clone-retention-max-bytes: 1073741824

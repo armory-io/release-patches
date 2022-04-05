@@ -1,0 +1,4 @@
+namespace: spinnaker-sanbox
+
+resources:
+  - base_config.yml

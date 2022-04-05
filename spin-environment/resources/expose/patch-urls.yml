@@ -1,0 +1,29 @@
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      security:
+        authn:
+          enabled: false
+        apiSecurity:
+          overrideBaseUrl: http://${ ALB_HOSTNAME }/api/v1
+        uiSecurity:
+          overrideBaseUrl: http://${ ALB_HOSTNAME }
+    profiles:
+      gate:
+        archaius.enabled: false
+        server:
+          servlet:
+            context-path: /api/v1
+        tomcat:
+          protocolHeader: X-Forwarded-Proto
+          remoteIpHeader: X-Forwarded-For
+          internalProxies: .*
+          httpsServerPort: X-Forwarded-Port
+    service-settings:
+      gate:
+        healthEndpoint: /api/v1/health
+

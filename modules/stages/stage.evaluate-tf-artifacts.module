@@ -1,0 +1,11 @@
+{
+  "artifactContents": {{ var "art_contents" ?: [] }},
+  "refId": "{{ var "ref_id" }}",
+  "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+  "expectedArtifacts": {{ var "expected_art" ?: [] }},
+  "completeOtherBranchesThenFail": false,
+  "continuePipeline": false,
+  "failPipeline": false,
+  "name": "{{ var "stage_name" }}",
+  "type": "evaluateArtifacts"
+}

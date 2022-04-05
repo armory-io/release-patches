@@ -1,0 +1,79 @@
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  spinnakerConfig:
+    config:
+      deploymentEnvironment:
+        customSizing:
+          spin-clouddriver:
+            limits:
+              cpu: 1
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 2Gi
+          spin-deck:
+            limits:
+              cpu: 300m
+              memory: 64Mi
+            requests:
+              cpu: 150m
+              memory: 32Mi
+          spin-echo:
+            limits:
+              cpu: 500m
+              memory: 1Gi
+            requests:
+              cpu: 150m
+              memory: 512Mi
+          spin-fiat:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 150m
+              memory: 256Mi
+          spin-front50:
+            limits:
+              cpu: 300m
+              memory: 1Gi
+            requests:
+              cpu: 150m
+              memory: 512Mi
+          spin-gate:
+            limits:
+              cpu: 600m
+              memory: 1Gi
+            requests:
+              cpu: 300m
+              memory: 512Mi
+          spin-kayenta:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 150m
+              memory: 256Mi
+          spin-igor:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 150m
+              memory: 256Mi
+          spin-orca:
+            limits:
+              cpu: 1
+              memory: 1Gi
+            requests:
+              cpu: 750m
+              memory: 512Mi
+          spin-rosco:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 150m
+              memory: 256Mi

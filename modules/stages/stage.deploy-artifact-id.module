@@ -1,0 +1,18 @@
+{
+  "account": "${parameters.k8s_account}",
+  "namespaceOverride": "${parameters.namespace}",
+  "cloudProvider": "kubernetes",
+  "completeOtherBranchesThenFail": false,
+  "continuePipeline": false,
+  "failPipeline": false,
+  "manifestArtifactId": "{{ var "manifest_id" ?: {} }}",
+  "moniker": {
+    "app": "{{ var "app_name" }}"
+  },
+  "name": "{{ var "stage_name" }}",
+  "refId": "{{ var "ref_id" }}",
+  "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+  "skipExpressionEvaluation": {{ var "skip_spel" ?: "false" }},
+  "source": "artifact",
+  "type": "deployManifest"
+}

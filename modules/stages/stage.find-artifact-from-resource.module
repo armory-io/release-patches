@@ -1,0 +1,12 @@
+{
+   "account": "${parameters.k8s_account}",
+   "app": "{{ var "app_name" }}",
+   "cloudProvider": "kubernetes",
+   "location": "${parameters.namespace}",
+   "manifestName": "{{ var "kind" }} {{var "kind_name"}}",
+   "mode": "static",
+   "name": "{{ var "stage_name" }}",
+   "refId": "{{ var "ref_id" }}",
+   "requisiteStageRefIds": {{ var "stage_dependency" ?: [] }},
+   "type": "findArtifactsFromResource"
+}

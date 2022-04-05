@@ -1,0 +1,38 @@
+apiVersion: spinnaker.armory.io/v1alpha2
+kind: SpinnakerService
+metadata:
+  name: spinnaker
+spec:
+  validation:
+    providers:
+      kubernetes:
+        enabled: true
+  spinnakerConfig:
+    config:
+      providers:
+        kubernetes:
+          enabled: true
+          primaryAccount: spinnaker
+          accounts:
+          - name: spinnaker
+            serviceAccount: true
+            providerVersion: V2
+            permissions: {}
+            dockerRegistries: []
+            cacheThreads: 1
+            namespaces:
+              - '${parameters.namespace}'
+            omitNamespaces: []
+            kinds: []
+            omitKinds: []
+            customResources: []
+            checkPermissionsOnStartup: true
+            liveManifestCalls: false
+            cachingPolicies: []
+            oAuthScopes: []
+            onlySpinnakerManaged: false
+
+    service-settings:
+      clouddriver:
+        kubernetes:
+          serviceAccountName: spin-sa

@@ -1,0 +1,6 @@
+namespace: '${parameters.namespace}'
+
+resources:
+  - debugging_tools.yml
+  - mysql_client.yml
+  - grpccurl.yml
