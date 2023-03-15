@@ -5,4 +5,4 @@ metadata:
 spec:
   spinnakerConfig:
     config:
-      version: 2.28.5
+      version: 2.27.8-rc2
