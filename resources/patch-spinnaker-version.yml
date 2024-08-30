@@ -5,4 +5,4 @@ metadata:
 spec:
   spinnakerConfig:
     config:
-      version: 2.34.1-rc1
+      version: 2.34.1
